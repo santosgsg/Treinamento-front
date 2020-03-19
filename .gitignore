@@ -7,4 +7,4 @@ target
 node_modules
 /www
 coverage
-
+package-lock.json
