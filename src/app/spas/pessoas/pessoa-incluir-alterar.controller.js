@@ -120,17 +120,20 @@ function PessoaIncluirAlterarController(
         if (vm.perfil){
 
             var isNovoPerfil = true;
+            console.log('Tem perfil');
             
             angular.forEach(objetoDados.perfils, function (value, key) {
                 if (value.id === vm.perfil.id) {
                     isNovoPerfil = false;
+                    console.log('É uma atualização');
                 }
             });
             if (isNovoPerfil)
                 objetoDados.perfils.push(vm.perfil);
         }
         if (vm.acao == "Cadastrar") {
-
+            console.log('Objeto de cadastro: ', objetoDados);
+            
             vm.salvar(vm.urlPessoa, objetoDados).then(
                 function (pessoaRetorno) {
                     vm.retornarTelaListagem();
