@@ -9,7 +9,7 @@ function PerfilListarController($rootScope, $scope, $location,
     vm.qdePorPagina = 5;
     vm.ultimoIndex = 0;
     vm.contador = 0;
-    vm.url = "http://localhost:8080/treinamento/api/perfils/";
+    vm.url = "http://localhost:8080/treinamento/api/perfil/";
     vm.urlEndereco = "http://localhost:8080/treinamento/api/enderecos/";
 
     vm.init = function () {
@@ -89,29 +89,18 @@ function PerfilListarController($rootScope, $scope, $location,
 
     vm.editar = function (id) {
         if (id !== undefined)
-            $location.path("EditarPerfil/" + id);
+            $location.path("editarPerfil/" + id);
         else
             $location.path("cadastrarPerfil");
     }
 
     vm.remover = function (id) {
 
-        var liberaExclusao = true;
-
-        angular.forEach(vm.listaEndereco, function (value, key) {
-            if (value.idPessoa === id)
-                liberaExclusao = false;
-        });
-
-        if (liberaExclusao)
-            HackatonStefaniniService.excluir(vm.url + id).then(
-                function (response) {
-                    vm.init();
-                }
-            );
-        else {
-            alert("Pessoa com Endereço vinculado, exclusão não permitida");
-        }
+        HackatonStefaniniService.excluir(vm.url + id).then(
+            function (response) {
+                vm.init();
+            }
+        );
     }
 
     vm.retornarTelaListagem = function () {

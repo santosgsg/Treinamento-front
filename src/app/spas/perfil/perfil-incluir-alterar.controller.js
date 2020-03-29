@@ -24,11 +24,11 @@ function PerfilIncluirAlterarController(
         id: null,
         nome: "",
         descricao: "",
-        dataHoraInclusao: "",
-        dataHoraAlteracao: false
+        dataHoraInclusao: null,
+        dataHoraAlteracao: null
     };
 
-    vm.urlPerfil = "http://localhost:8080/treinamento/api/perfils/";
+    vm.urlPerfil = "http://localhost:8080/treinamento/api/perfil/";
 
     /**METODOS DE INICIALIZACAO */
     vm.init = function () {
@@ -36,27 +36,19 @@ function PerfilIncluirAlterarController(
         vm.tituloTela = "Cadastrar Perfil";
         vm.acao = "Cadastrar";
 
+        if ($routeParams.idPerfil) {
+            vm.tituloTela = "Editar Perfil";
+            vm.acao = "Editar";
 
-        /**Recuperar a lista de perfil */
-        vm.listar(vm.urlPerfil).then(
-            function (response) {
-                if (response !== undefined) {
-                    vm.listaPerfil = response;
-                    if ($routeParams.idPerfil) {
-                        vm.tituloTela = "Editar Perfil";
-                        vm.acao = "Editar";
-
-                        vm.recuperarObjetoPorIDURL($routeParams.idPerfil, vm.urlPerfil).then(
-                            function (PerfilRetorno) {
-                                if (PerfilRetorno !== undefined) {
-                                    vm.perfil = perfilRetorno;
-                                }
-                            }
-                        );
+            vm.recuperarObjetoPorIDURL($routeParams.idPerfil, vm.urlPerfil).then(
+                function (perfilRetorno) {
+                    if (perfilRetorno !== undefined) {
+                        vm.perfil = perfilRetorno;
+                        
                     }
                 }
-            }
-        );
+            );
+        }
     };
 
     /**METODOS DE TELA */
@@ -65,38 +57,28 @@ function PerfilIncluirAlterarController(
     };
 
     vm.retornarTelaListagem = function () {
-        $location.path("listarPerfil");
+        $location.path("listarPerfis");
     };
 
     vm.incluir = function () {
 
         var objetoDados = angular.copy(vm.perfil);
 
-        if (vm.perfil !== null){
-
-            var isNovoPerfil = true;
-            
-            angular.forEach(objetoDados.perfils, function (value, key) {
-                if (value.id === vm.perfil.id) {
-                    isNovoPerfil = false;
-                }
-            });
-            if (isNovoPerfil)
-                objetoDados.perfils.push(vm.perfil);
-        }
-        if (vm.acao == "Cadastrar") {
-
-            vm.salvar(vm.urlPerfil, objetoDados).then(
-                function (perfilRetorno) {
-                    vm.retornarTelaListagem();
-                });
-        } else if (vm.acao == "Editar") {
-            vm.alterar(vm.urlperfil, objetoDados).then(
-                function (perfilRetorno) {
-                    vm.retornarTelaListagem();
-                });
-        }
-    };
+        if (vm.perfil !== null){            
+            if (vm.acao == "Cadastrar") {
+                
+                vm.salvar(vm.urlPerfil, objetoDados).then(
+                    function (perfilRetorno) {
+                        vm.retornarTelaListagem();
+                    });
+            } else if (vm.acao == "Editar") {
+                vm.alterar(vm.urlPerfil, objetoDados).then(
+                    function (perfilRetorno) {
+                        vm.retornarTelaListagem();
+                    });
+            }
+        };
+    }
 
     vm.remover = function (objeto, tipo) {
 
@@ -136,8 +118,8 @@ function PerfilIncluirAlterarController(
         return deferred.promise;
     }
 
-    vm.salvar = function (url, objeto) {
-
+    vm.salvar = function (url, objeto) {       
+        
         var deferred = $q.defer();
         var obj = JSON.stringify(objeto);
         HackatonStefaniniService.incluir(url, obj).then(
@@ -151,6 +133,8 @@ function PerfilIncluirAlterarController(
     }
 
     vm.alterar = function (url, objeto) {
+        console.log('Chegou: ', url);
+        console.log('Objeto: ', objeto);
 
         var deferred = $q.defer();
         var obj = JSON.stringify(objeto);
@@ -193,35 +177,4 @@ function PerfilIncluirAlterarController(
 
         return dia + mes + ano;
     };
-
-    vm.listaUF = [
-        { "id": "RO", "desc": "RO" },
-        { "id": "AC", "desc": "AC" },
-        { "id": "AM", "desc": "AM" },
-        { "id": "RR", "desc": "RR" },
-        { "id": "PA", "desc": "PA" },
-        { "id": "AP", "desc": "AP" },
-        { "id": "TO", "desc": "TO" },
-        { "id": "MA", "desc": "MA" },
-        { "id": "PI", "desc": "PI" },
-        { "id": "CE", "desc": "CE" },
-        { "id": "RN", "desc": "RN" },
-        { "id": "PB", "desc": "PB" },
-        { "id": "PE", "desc": "PE" },
-        { "id": "AL", "desc": "AL" },
-        { "id": "SE", "desc": "SE" },
-        { "id": "BA", "desc": "BA" },
-        { "id": "MG", "desc": "MG" },
-        { "id": "ES", "desc": "ES" },
-        { "id": "RJ", "desc": "RJ" },
-        { "id": "SP", "desc": "SP" },
-        { "id": "PR", "desc": "PR" },
-        { "id": "SC", "desc": "SC" },
-        { "id": "RS", "desc": "RS" },
-        { "id": "MS", "desc": "MS" },
-        { "id": "MT", "desc": "MT" },
-        { "id": "GO", "desc": "GO" },
-        { "id": "DF", "desc": "DF" }
-    ];
-
 }

@@ -23,7 +23,7 @@
         <h5 class="modal-title">{{vm.tituloTela}}</h5>
       </div>
       <div class="form-group">
-        <label for="nomePerfil">Nome: </label>
+        <label for="nomePerfil"><strong>Nome</strong></label>
         <input
           type="nome"
           class="form-control"
@@ -33,82 +33,25 @@
         />
       </div>
       <div class="form-group">
-        <label for="descricaoPerfil">Descrição</label>
-        <!-- <input
-          type="textarea"
-          class="form-control"
-          id="descricaoPerfil"
-          ng-model="vm.perfil.descricao"
-        /> -->
-        <textarea rows="3" cols="90" id="descricaoPerfil" ng-model="vm.perfil.descricao">
-          Teste</textarea>
+        <label for="descricaoPerfil"><strong>Descrição</strong></label>
+        <textarea class="form-control" rows="4" id="descricaoPerfil" placeholder="Digite a descrição..." ng-model="vm.perfil.descricao"></textarea>
       </div>
 
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          ng-checked="vm.pessoa.situacao"
-          ng-click="vm.pessoa.situacao = !vm.pessoa.situacao"
-          type="checkbox"
-          id="defaultCheck1"
-        />
-      </div>
-      <div>
-        <div style="text-align: right;">
-          <img
-            src="../../../app/imagens/bootstrap-icons/icons/document-richtext.svg"
-            style="cursor: pointer;"
-            alt=""
-            width="25"
-            height="25"
-            title="Incluir Endereço"
-            ng-click="vm.abrirModal()"
-          />
+      <hr>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="dataInclusao"><strong>Data de inclusão</strong></label>
+          <p ng-if="vm.perfil.dataHoraInclusao">{{vm.perfil.dataHoraInclusao | date:'dd/MM/yyyy HH:mm'}}</p>
+          <p ng-if="!vm.perfil.dataHoraInclusao">Data não cadastrada</p>
         </div>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Cidade</th>
-              <th scope="col">UF</th>
-              <th scope="col">Logradouro</th>
-              <th scope="col">Editar</th>
-              <th scope="col">Excluir</th>
-            </tr>
-          </thead>
-          <tbody ng-repeat="endereco in vm.pessoa.enderecos">
-            <tr>
-              <td>{{endereco.localidade}}</td>
-              <td>{{endereco.uf}}</td>
-              <td>{{endereco.logradouro}}</td>
-              <td>
-                <img
-                  ng-class="{'disabledDiv': endereco.complemento.length === 0}"
-                  src="../../../app/imagens/bootstrap-icons/icons/pencil.svg"
-                  style="cursor: pointer;"
-                  alt=""
-                  width="25"
-                  height="25"
-                  title="Editar"
-                  ng-click="vm.abrirModal(endereco)"
-                />
-              </td>
-
-              <td>
-                <img
-                  ng-class="{'disabledDiv': endereco.id === null}"
-                  src="../../../app/imagens/bootstrap-icons/icons/trash.svg"
-                  style="cursor: pointer;"
-                  alt=""
-                  width="25"
-                  height="25"
-                  title="Excluir"
-                  ng-click="vm.remover(endereco, 'ENDERECO')"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="form-group col-md-6">
+          <label for="dataAtualizacao"><strong>Data de atualização</strong></label>
+          <p ng-if="vm.perfil.dataHoraAlteracao">{{vm.perfil.dataHoraAlteracao | date:'dd/MM/yyyy HH:mm'}}</p>
+          <p ng-if="!vm.perfil.dataHoraAlteracao">Data não cadastrada</p>
+        </div>
       </div>
+      <small style="color:red">As datas de inclusão e atualização são atualizadas automaticamente no servidor.</small>
     </form>
   </div>
   <div
@@ -125,45 +68,5 @@
     <button type="button" class="btn btn-danger" ng-click="vm.cancelar()">
       Cancelar
     </button>
-  </div>
-
-  <div
-    class="modal fade"
-    id="modalEndereco"
-    role="dialog"
-    data-backdrop="false"
-  >
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">
-            &times;
-          </button>
-        </div>
-        <div class="modal-body">
-          <div
-            ng-include="'app/spas/endereco/template/endereco-incluir-alterar.tpl.html'"
-          ></div>
-        </div>
-
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-primary btn-space"
-            data-dismiss="modal"
-          >
-            Salvar
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            ng-click="vm.limparTela()"
-          >
-            Cancelar
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </div>

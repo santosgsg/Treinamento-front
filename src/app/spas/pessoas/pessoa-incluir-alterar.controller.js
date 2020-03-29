@@ -41,7 +41,7 @@ function PessoaIncluirAlterarController(
     };
 
     vm.urlEndereco = "http://localhost:8080/treinamento/api/enderecos/";
-    vm.urlPerfil = "http://localhost:8080/treinamento/api/perfils/";
+    vm.urlPerfil = "http://localhost:8080/treinamento/api/perfil/";
     vm.urlPessoa = "http://localhost:8080/treinamento/api/pessoas/";
 
     /**METODOS DE INICIALIZACAO */
