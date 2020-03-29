@@ -1,0 +1,66 @@
+<style>
+  .btn-space {
+    margin-right: 10px;
+  }
+
+  myModal {
+    z-index: 2147483647;
+  }
+
+  .disabledDiv {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+</style>
+
+<div ng-init="vm.init()">
+  <div
+    class="container"
+    style="overflow-y: auto; overflow-x: hidden; height: 401px"
+  >
+    <form>
+      <label for="dataInclusao"><strong>CEP</strong></label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Digite o cep aqui..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button">Buscar</button>
+        </div>
+      </div>
+      <!-- Colocar ng-if para quando obtiver resultado -->
+      <small style="color:royalblue">Informações obtidas em viacep</small>
+      <hr>
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <label for="dataInclusao"><strong>Uf</strong></label>
+          <!-- <select class="form-control" ng-options="uf for uf in vm.listaUF"> -->
+            <select class="form-control">
+            <option disabled>Selecione a UF</option>
+            <option ng-repeat="uf in vm.listaUF" >{{uf}}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-5">
+          <label for="cidade"><strong>Cidade</strong></label>
+          <input type="text" class="form-control">
+        </div>
+        <div class="form-group col-md-5">
+          <label for="bairro"><strong>Bairro</strong></label>
+          <input type="text" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="longradouro"><strong>Longradouro</strong></label>
+        <input
+          type="nome"
+          class="form-control"
+          id="longradouro"
+          ng-model="vm.endereco.longradouro"
+          placeholder="Digite o longradouro..."
+        />
+      </div>
+      <div class="form-group">
+        <label for="complemento"><strong>Complemento</strong></label>
+        <input type="nome" class="form-control" id="complemento" ng-model="vm.endereco.complemento" placeholder="Digite o complemento..."/>
+      </div>
+    </form>
+  </div>
+</div>
