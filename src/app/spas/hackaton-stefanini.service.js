@@ -17,7 +17,10 @@
                 },
                 incluir: function (url, data) {
                     return $http.post(url, data).then(tratarResposta, tratarErro);
-                }          
+                },
+                buscarCEP: function (cep){
+                    return $http.get("https://viacep.com.br/ws/"+cep+"/json/").then(tratarResposta, tratarErro)
+                }
             };
 
             /**METODOS TRATAMENTO ERROS */

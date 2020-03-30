@@ -29,16 +29,22 @@ function PessoaIncluirAlterarController(
         perfils: [],
         situacao: false
     };
+    
     vm.enderecoDefault = {
         id: null,
         idPessoa: null,
         cep: "",
         uf: "",
-        localidade: "",
+        localidade: "", 
         bairro: "",
         logradouro: "",
         complemento: ""
     };
+    
+    vm.modalCep ={
+        invalid: false,
+        successfulQuery: false
+    }
 
     vm.urlEndereco = "http://localhost:8080/treinamento/api/enderecos/";
     vm.urlPerfil = "http://localhost:8080/treinamento/api/perfil/";
@@ -68,6 +74,7 @@ function PessoaIncluirAlterarController(
                                     vm.pessoa = pessoaRetorno;
                                     vm.pessoa.dataNascimento = vm.formataDataTela(pessoaRetorno.dataNascimento);
                                     vm.perfil = vm.pessoa.perfils[0];
+                                    vm.enderecos = vm.pessoa.enderecos;
                                 }
                             }
                         );
@@ -86,14 +93,11 @@ function PessoaIncluirAlterarController(
         $location.path("listarPessoas");
     };
 
-    vm.abrirModal = function (endereco) {
-
+    vm.abrirModal = function (endereco) {        
         vm.enderecoModal = vm.enderecoDefault;
+
         if (endereco !== undefined)
             vm.enderecoModal = endereco;
-
-        if (vm.pessoa.enderecos.length === 0)
-            vm.pessoa.enderecos.push(vm.enderecoModal);
 
         $("#modalEndereco").modal();
     };
@@ -103,10 +107,14 @@ function PessoaIncluirAlterarController(
         vm.endereco = undefined;
     };
 
+    vm.adicionarEndereco = function () {
+        vm.pessoa.enderecos.push(vm.enderecoModal);
+        
+        $("#modalEndereco").modal("toggle");
+    };
+
     vm.incluir = function () {
-        console.log(vm.pessoa.dataNascimento);
         vm.pessoa.dataNascimento = vm.formataDataJava(vm.pessoa.dataNascimento);
-        console.log(vm.pessoa.dataNascimento);
         
         var objetoDados = angular.copy(vm.pessoa);
         var listaEndereco = [];
@@ -169,7 +177,7 @@ function PessoaIncluirAlterarController(
                 if (response.data !== undefined)
                     deferred.resolve(response.data);
                 else
-                    deferred.resolve(vm.enderecoDefault);
+                    deferred.resolve(enderecoDefault);
             }
         );
         return deferred.promise;
@@ -245,5 +253,57 @@ function PessoaIncluirAlterarController(
 
         return dia + mes + ano;
     }
+
+    vm.buscarCEP = function (){
+        let cep = vm.enderecoModal.cep;
+        const validacep = /^[0-9]{8}$/;
+        
+        if(validacep.test(cep)) {
+            HackatonStefaniniService.buscarCEP(cep).then(function (res) {
+                if (res.status == 200) {
+                    
+                    vm.modalCep.successfulQuery = true;
+                    vm.modalCep.invalid = false;
+                    vm.enderecoModal.uf = res.data.uf;
+                    vm.enderecoModal.bairro = res.data.bairro;
+                    vm.enderecoModal.localidade = res.data.localidade;
+                    vm.enderecoModal.logradouro = res.data.logradouro;
+                }
+            });
+        } else {
+            vm.modalCep.invalid = true;
+            vm.modalCep.successfulQuery = false;
+        }
+    }
+
+    vm.listaUF = [
+        { "id": "RO", "desc": "RO" },
+        { "id": "AC", "desc": "AC" },
+        { "id": "AM", "desc": "AM" },
+        { "id": "RR", "desc": "RR" },
+        { "id": "PA", "desc": "PA" },
+        { "id": "AP", "desc": "AP" },
+        { "id": "TO", "desc": "TO" },
+        { "id": "MA", "desc": "MA" },
+        { "id": "PI", "desc": "PI" },
+        { "id": "CE", "desc": "CE" },
+        { "id": "RN", "desc": "RN" },
+        { "id": "PB", "desc": "PB" },
+        { "id": "PE", "desc": "PE" },
+        { "id": "AL", "desc": "AL" },
+        { "id": "SE", "desc": "SE" },
+        { "id": "BA", "desc": "BA" },
+        { "id": "MG", "desc": "MG" },
+        { "id": "ES", "desc": "ES" },
+        { "id": "RJ", "desc": "RJ" },
+        { "id": "SP", "desc": "SP" },
+        { "id": "PR", "desc": "PR" },
+        { "id": "SC", "desc": "SC" },
+        { "id": "RS", "desc": "RS" },
+        { "id": "MS", "desc": "MS" },
+        { "id": "MT", "desc": "MT" },
+        { "id": "GO", "desc": "GO" },
+        { "id": "DF", "desc": "DF" }
+    ];
 
 }

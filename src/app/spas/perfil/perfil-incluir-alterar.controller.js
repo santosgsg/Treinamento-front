@@ -98,8 +98,6 @@ function PerfilIncluirAlterarController(
             function (response) {
                 if (response.data !== undefined)
                     deferred.resolve(response.data);
-                else
-                    deferred.resolve(vm.enderecoDefault);
             }
         );
         return deferred.promise;
