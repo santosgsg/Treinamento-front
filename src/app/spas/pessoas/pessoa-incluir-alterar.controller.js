@@ -94,11 +94,14 @@ function PessoaIncluirAlterarController(
     };
 
     vm.abrirModal = function (endereco) {        
-        vm.enderecoModal = vm.enderecoDefault;
+        vm.enderecoModal = angular.copy(vm.enderecoDefault);
 
-        if (endereco !== undefined)
+        if (endereco !== undefined){
             vm.enderecoModal = endereco;
 
+            if (vm.pessoa.enderecos.length === 0)
+            vm.pessoa.enderecos.push(vm.enderecoModal);
+        }
         $("#modalEndereco").modal();
     };
 
@@ -117,32 +120,25 @@ function PessoaIncluirAlterarController(
         vm.pessoa.dataNascimento = vm.formataDataJava(vm.pessoa.dataNascimento);
         
         var objetoDados = angular.copy(vm.pessoa);
-        var listaEndereco = [];
-        angular.forEach(objetoDados.enderecos, function (value, key) {
-            if (value.complemento.length > 0) {
-                value.idPessoa = objetoDados.id;
-                if(listaEndereco)
-                    listaEndereco.push(angular.copy(value));
-            }
-        });
+        // var listaEndereco = [];
+        // angular.forEach(objetoDados.enderecos, function (value, key) {
+        //     listaEndereco.push(angular.copy(value));
+        // });
 
-        objetoDados.enderecos = listaEndereco;
+        // objetoDados.enderecos = listaEndereco;
         if (vm.perfil){
 
             var isNovoPerfil = true;
-            console.log('Tem perfil');
             
             angular.forEach(objetoDados.perfils, function (value, key) {
                 if (value.id === vm.perfil.id) {
                     isNovoPerfil = false;
-                    console.log('É uma atualização');
                 }
             });
             if (isNovoPerfil)
                 objetoDados.perfils.push(vm.perfil);
         }
         if (vm.acao == "Cadastrar") {
-            console.log('Objeto de cadastro: ', objetoDados);
             
             vm.salvar(vm.urlPessoa, objetoDados).then(
                 function (pessoaRetorno) {
@@ -264,10 +260,10 @@ function PessoaIncluirAlterarController(
                     
                     vm.modalCep.successfulQuery = true;
                     vm.modalCep.invalid = false;
-                    vm.enderecoModal.uf = res.data.uf;
-                    vm.enderecoModal.bairro = res.data.bairro;
-                    vm.enderecoModal.localidade = res.data.localidade;
-                    vm.enderecoModal.logradouro = res.data.logradouro;
+                    vm.enderecoModal.uf = angular.copy(res.data.uf);
+                    vm.enderecoModal.bairro = angular.copy(res.data.bairro);
+                    vm.enderecoModal.localidade = angular.copy(res.data.localidade);
+                    vm.enderecoModal.logradouro = angular.copy(res.data.logradouro);
                 }
             });
         } else {
