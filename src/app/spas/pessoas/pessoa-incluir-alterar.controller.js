@@ -255,7 +255,8 @@ function PessoaIncluirAlterarController(
         const validacep = /^[0-9]{8}$/;
         
         if(validacep.test(cep)) {
-            HackatonStefaniniService.buscarCEP(cep).then(function (res) {
+            
+            HackatonStefaniniService.buscarCEP(vm.urlEndereco + 'buscarCep/' + cep).then(function (res) {
                 if (res.status == 200) {
                     
                     vm.modalCep.successfulQuery = true;
