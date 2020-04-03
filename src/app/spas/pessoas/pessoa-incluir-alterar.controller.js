@@ -1,4 +1,29 @@
-angular.module("hackaton-stefanini").controller("PessoaIncluirAlterarController", PessoaIncluirAlterarController);
+angular.module("hackaton-stefanini").controller("PessoaIncluirAlterarController", 
+PessoaIncluirAlterarController)
+.directive("selectNgFiles", function() {
+    return {
+        require: "ngModel",
+        link: function postLink(scope,elem,attrs,ngModel) {
+        elem.on("change", function(e) {
+            var files = elem[0].files;
+            ngModel.$setViewValue(files);
+
+            var reader = new FileReader();
+            reader.onload = (function() {
+                return function(e) {
+                var binaryData = e.target.result;
+                
+                
+                var base64String = window.btoa(binaryData);
+                document.getElementById("preview").src = 'data:image/png;base64,' + base64String;
+                };
+            })(files[0]);
+            
+            reader.readAsBinaryString(files[0]);
+                });
+            }
+        }
+    });
 PessoaIncluirAlterarController.$inject = [
     "$rootScope",
     "$scope",
@@ -17,14 +42,47 @@ function PessoaIncluirAlterarController(
     $routeParams,
     HackatonStefaniniService) {
 
+    // document.getElementById('files').addEventListener('change', openFiles, false);
+
+    // function openFiles(evt){
+    //     var files = evt.target.files;
+    
+    //     for (var i = 0, len = files.length; i < len; i++) {
+    //         var file = files[i];
+    
+    //         var reader = new FileReader();
+    
+    //         reader.onload = (function(f) {
+    //             return function(e) {
+    //                 // Here you can use `e.target.result` or `this.result`
+    //                 // and `f.name`.
+    //             };
+    //         })(file);
+            
+    //         reader.readAsText(file);
+    //     }
+    // }
+
+    // vm.processFiles = function(evt){
+    //     console.log('Chamou: ', evt);
+    //     var file = evt.target.files[0];
+    //     var fileReader = new FileReader();
+    //         fileReader.onload = function (event) {
+    //         var uri = event.target.result;
+    //             vm.base64String = window.btoa(uri);
+    //         };
+    //         fileReader.readAsDataURL(file);
+    //   };
+    
+
     /**ATRIBUTOS DA TELA */
     vm = this;
-
     vm.pessoa = {
         id: null,
         nome: "",
         email: "",
         dataNascimento: null,
+        imagem: null,
         enderecos: [],
         perfils: [],
         situacao: false

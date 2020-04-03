@@ -22,51 +22,66 @@
       <div class="mx-auto" style="width: 200px;">
         <h5 class="modal-title">{{vm.tituloTela}}</h5>
       </div>
-      <div class="form-group">
-        <label for="nomePessoa">Nome: </label>
-        <input
-          type="nome"
-          class="form-control"
-          id="nomePessoa"
-          ng-model="vm.pessoa.nome"
-          placeholder="Digite o nome da pessoa ..."
-        />
-      </div>
-      <div class="form-group">
-        <label for="emailPessoa">Email</label>
-        <input
-          type="text"
-          class="form-control"
-          id="emailPessoa"
-          ng-model="vm.pessoa.email"
-          placeholder="name@example.com"
-        />
-      </div>
       <div class="form-row">
-        <div class="form-group">
-          <label for="nascimentoPessoa" style="width: 250px;"
-            >Data de nascimento</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="nascimentoPessoa"
-            ng-model="vm.pessoa.dataNascimento"
-            ui-mask="99/99/9999"
-            style="width: 120px;"
-          />
+        <div class="col-md-3">
+          <div class="form-group">
+            <img ng-src="" id="preview" alt="{{vm.inputImageArray[0].name}}" width="156" height="156"/>
+          </div>
+          <label for="imagemPessoaLabel">Foto de perfil</label>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="imagemPessoa" select-ng-files ng-model="vm.inputImageArray" accept="image/jpeg, image/png">
+            <label class="custom-file-label" style="font-size: 13px;" for="imagemPessoa">{{vm.inputImageArray ? vm.inputImageArray[0].name : 'Escolher arquivo...'}}</label>
+            <!-- <div class="invalid-feedback">O arquivo deve ser uma imagem</div> -->
+          </div>
         </div>
-        <div class="form-group">
-          <label for="nomePerfil">Perfil</label>
-          <div>
-            <select
-              style="width: 250px; height: 38px;"
-              ng-class="{'disabledDiv': vm.listaPerfil.length === 0, 'custom-select custom-select-sm': true}"
-              ng-options="item as item.nome for item in vm.listaPerfil track by item.id"
-              ng-model="vm.perfil"
-            >
-              <option value="">-- PERFIL --</option>
-            </select>
+        <div class="col-md-9">
+          <div class="form-group">
+            <label for="nomePessoa">Nome: </label>
+            <input
+              type="nome"
+              class="form-control"
+              id="nomePessoa"
+              ng-model="vm.pessoa.nome"
+              placeholder="Digite o nome da pessoa ..."
+            />
+          </div>
+          <div class="form-group">
+            <label for="emailPessoa">Email</label>
+            <input
+              type="text"
+              class="form-control"
+              id="emailPessoa"
+              ng-model="vm.pessoa.email"
+              placeholder="name@example.com"
+            />
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="nascimentoPessoa" style="width: 250px;"
+                >Data de nascimento</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="nascimentoPessoa"
+                ng-model="vm.pessoa.dataNascimento"
+                ui-mask="99/99/9999"
+                style="width: 120px;"
+              />
+            </div>
+            <div class="form-group col-md-8">
+              <label for="nomePerfil">Perfil</label>
+              <div>
+                <select
+                  style="width: 250px; height: 38px;"
+                  ng-class="{'disabledDiv': vm.listaPerfil.length === 0, 'custom-select custom-select-sm': true}"
+                  ng-options="item as item.nome for item in vm.listaPerfil track by item.id"
+                  ng-model="vm.perfil"
+                >
+                  <option value="">-- PERFIL --</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       </div>
