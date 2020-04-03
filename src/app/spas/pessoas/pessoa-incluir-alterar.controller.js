@@ -13,8 +13,8 @@ PessoaIncluirAlterarController)
                 return function(e) {
                 var binaryData = e.target.result;
                 
-                
                 var base64String = window.btoa(binaryData);
+                vm.preImagem = base64String;
                 document.getElementById("preview").src = 'data:image/png;base64,' + base64String;
                 };
             })(files[0]);
@@ -77,12 +77,18 @@ function PessoaIncluirAlterarController(
 
     /**ATRIBUTOS DA TELA */
     vm = this;
+    vm.preImagem = '';
     vm.pessoa = {
         id: null,
         nome: "",
         email: "",
         dataNascimento: null,
-        imagem: null,
+        imagem: {
+            nome: "",
+            tipo: "",
+            bytes: 0,
+            base64: ""
+        },
         enderecos: [],
         perfils: [],
         situacao: false
@@ -176,7 +182,13 @@ function PessoaIncluirAlterarController(
 
     vm.incluir = function () {
         vm.pessoa.dataNascimento = vm.formataDataJava(vm.pessoa.dataNascimento);
-        
+        if(vm.inputImageArray){
+            console.log(vm.inputImageArray);
+            vm.pessoa.imagem.nome = vm.inputImageArray[0].name;
+            vm.pessoa.imagem.tipo = vm.inputImageArray[0].type;
+            vm.pessoa.imagem.bytes = vm.inputImageArray[0].size;
+            vm.pessoa.imagem.base64 = vm.preImagem;
+        }
         var objetoDados = angular.copy(vm.pessoa);
         // var listaEndereco = [];
         // angular.forEach(objetoDados.enderecos, function (value, key) {
