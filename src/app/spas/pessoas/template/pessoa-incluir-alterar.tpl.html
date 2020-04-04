@@ -30,7 +30,7 @@
           <label for="imagemPessoaLabel">Foto de perfil</label>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="imagemPessoa" select-ng-files ng-model="vm.inputImageArray" accept="image/jpeg, image/png">
-            <label class="custom-file-label" style="font-size: 13px;" for="imagemPessoa">{{vm.inputImageArray ? vm.inputImageArray[0].name : 'Escolher arquivo...'}}</label>
+            <label class="custom-file-label" style="font-size: 13px;" for="imagemPessoa">{{vm.inputImageArray[0] ? vm.inputImageArray[0].name : 'Escolher arquivo...'}}</label>
             <!-- <div class="invalid-feedback">O arquivo deve ser uma imagem</div> -->
           </div>
         </div>
@@ -69,19 +69,27 @@
                 style="width: 120px;"
               />
             </div>
-            <div class="form-group col-md-8">
+            <div class="form-group col-md-4">
               <label for="nomePerfil">Perfil</label>
-              <div>
                 <select
-                  style="width: 250px; height: 38px;"
-                  ng-class="{'disabledDiv': vm.listaPerfil.length === 0, 'custom-select custom-select-sm': true}"
+                  ng-class="{'disabledDiv': vm.listaPerfil.length === 0, 'custom-select': true}"
                   ng-options="item as item.nome for item in vm.listaPerfil track by item.id"
                   ng-model="vm.perfil"
                 >
-                  <option value="">-- PERFIL --</option>
+                <option value="">--Perfil--</option>
                 </select>
-              </div>
-            </div>
+            </div>   
+            <div class="form-group col-md-4">
+              <label for="selecionados">Selecionados</label>
+              <select
+                style="height: 60px;"
+                ng-class="{'disabledDiv': vm.listaPerfil.length === 0, 'custom-select custom-select-sm': true}"
+                ng-options="item as item.nome for item in vm.listarPerfilSelecionado track by item.id"
+                ng-model="vm.perfil"
+                multiple
+              >
+              </select>
+            </div>         
           </div>
         </div>
       </div>
