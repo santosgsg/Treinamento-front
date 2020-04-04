@@ -86,7 +86,6 @@ function PessoaIncluirAlterarController(
         imagem: {
             nome: "",
             tipo: "",
-            bytes: 0,
             base64: ""
         },
         enderecos: [],
@@ -109,6 +108,8 @@ function PessoaIncluirAlterarController(
         invalid: false,
         successfulQuery: false
     }
+
+    vm.inputImageArray = []
 
     vm.urlEndereco = "http://localhost:8080/treinamento/api/enderecos/";
     vm.urlPerfil = "http://localhost:8080/treinamento/api/perfil/";
@@ -139,6 +140,12 @@ function PessoaIncluirAlterarController(
                                     vm.pessoa.dataNascimento = vm.formataDataTela(pessoaRetorno.dataNascimento);
                                     vm.perfil = vm.pessoa.perfils[0];
                                     vm.enderecos = vm.pessoa.enderecos;
+                                    
+                                    if(vm.pessoa.imagem) {
+                                        
+                                        vm.inputImageArray.push({ "name": vm.pessoa.imagem.nome});
+                                        document.getElementById("preview").src = 'data:image/png;base64,' + vm.pessoa.imagem.base64;
+                                    }
                                 }
                             }
                         );
@@ -186,7 +193,6 @@ function PessoaIncluirAlterarController(
             console.log(vm.inputImageArray);
             vm.pessoa.imagem.nome = vm.inputImageArray[0].name;
             vm.pessoa.imagem.tipo = vm.inputImageArray[0].type;
-            vm.pessoa.imagem.bytes = vm.inputImageArray[0].size;
             vm.pessoa.imagem.base64 = vm.preImagem;
         }
         var objetoDados = angular.copy(vm.pessoa);
